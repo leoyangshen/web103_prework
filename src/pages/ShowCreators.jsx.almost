@@ -1,0 +1,78 @@
+import React, { useState, useEffect } from 'react';
+import CreatorCard from '../components/CreatorCard';
+import { supabase } from '../client'; // Import the Supabase client
+
+const ShowCreators = () => {
+  const [creators, setCreators] = useState([]); // State to store the list of creators
+  const [loading, setLoading] = useState(true); // State to manage loading status
+  const [error, setError] = useState(null); // State to manage any errors
+
+  useEffect(() => {
+    // Asynchronous function to fetch data from Supabase
+    const fetchCreators = async () => {
+      setLoading(true); // Set loading to true before fetching
+      setError(null); // Clear any previous errors
+
+      try {
+        // Fetch all data from the 'creators' table
+        const { data, error } = await supabase
+          .from('creators')
+          .select('*'); // Select all columns
+
+        if (error) {
+          console.error('Error fetching creators:', error);
+          setError('Failed to load creators. Please try again later.');
+        } else {
+          setCreators(data); // Update state with fetched data
+        }
+      } catch (err) {
+        console.error('Unexpected error fetching creators:', err);
+        setError('An unexpected error occurred. Check console for details.');
+      } finally {
+        setLoading(false); // Set loading to false after fetch attempt
+      }
+    };
+
+    // Call the asynchronous function when the component mounts
+    fetchCreators();
+  }, []); // Empty dependency array means this effect runs once after the initial render
+
+  if (loading) {
+    return (
+      <div className="container mx-auto p-4 text-center">
+        <p className="text-xl text-gray-700">Loading creators...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-4 text-center">
+        <p className="text-xl text-red-600 font-semibold">{error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Our Amazing Content Creators</h1>
+      {creators.length === 0 ? (
+        <div className="text-center p-10 bg-white rounded-xl shadow-lg">
+          <p className="text-2xl text-gray-700 font-semibold mb-4">No content creators found!</p>
+          <p className="text-lg text-gray-500">
+            It looks like there are no creators in your database yet.
+            Go to the "Add Creator" page to add your first one!
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {creators.map(creator => (
+            <CreatorCard key={creator.id} creator={creator} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ShowCreators;

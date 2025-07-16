@@ -1,0 +1,46 @@
+import React from 'react';
+import { useRoutes, Link } from 'react-router-dom'; // Import Link here
+import './App.css'; // Assuming you have an App.css for global styles or Tailwind setup
+
+// Import your page components
+import ShowCreators from './pages/ShowCreators';
+import ViewCreator from './pages/ViewCreator';
+import EditCreator from './pages/EditCreator';
+import AddCreator from './pages/AddCreator';
+
+export default function App() {
+  // Define your routes
+  let element = useRoutes([
+    { path: "/", element: <ShowCreators /> },
+    { path: "/new", element: <AddCreator /> },
+    { path: "/creator/:id", element: <ViewCreator /> },
+    { path: "/edit/:id", element: <EditCreator /> },
+    // A fallback route for any unmatched paths (e.g., 404 Not Found)
+    { path: "*", element: <ShowCreators /> } // Redirect to home for now, can be a 404 page later
+  ]);
+
+  return (
+    <> {/* Use a React Fragment as BrowserRouter is now external */}
+      {/* Navigation Bar */}
+      <nav className="bg-gray-800 p-4 text-white shadow-lg">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-3xl font-extrabold text-blue-300">Creatorverse</h1>
+          <div className="space-x-4">
+            {/* Use <Link> components for internal navigation */}
+            <Link to="/" className="text-gray-300 hover:text-white px-4 py-2 rounded-md text-lg font-medium transition duration-300 ease-in-out hover:bg-gray-700">
+              View All Creators
+            </Link>
+            <Link to="/new" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-lg font-medium transition duration-300 ease-in-out shadow-md">
+              Add Creator
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main content area where routes will be rendered */}
+      <div className="p-8 bg-gray-100 min-h-screen font-inter">
+        {element}
+      </div>
+    </>
+  );
+}
