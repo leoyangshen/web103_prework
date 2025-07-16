@@ -36,7 +36,7 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented required features:
 
 👉🏿<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
+https://github.com/leoyangshen/web103_prework/blob/main/Peek-Web103-PreWork.gif
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ...  👉🏿 GIF tool here PEEK
 <!-- Recommended tools:
